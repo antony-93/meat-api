@@ -2,6 +2,7 @@ import * as restify from 'restify'
 import { User } from "./users.model";
 import { ModelRouter } from '../common/model-router';
 import { authenticate } from '../security/auth.handler';
+import { authorize } from '../security/authz.handler';
 
 class UsersRouter extends ModelRouter<User>{
 
@@ -29,7 +30,7 @@ class UsersRouter extends ModelRouter<User>{
 
     applyRoutes(application: restify.Server) {
 
-        application.get({ path: `${this.basePath}`, version: '2.0.0' }, [this.findByEmail, this.findAll])
+        application.get({ path: `${this.basePath}`, version: '2.0.0' }, [authorize('admin'),this.findByEmail, this.findAll])
 
         application.get({ path: `${this.basePath}`, version: '1.0.0' }, this.findAll)
 

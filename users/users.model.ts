@@ -3,14 +3,18 @@ import { validateCPF } from '../common/validators'
 import * as bcrypt from 'bcrypt'
 import { environment } from '../common/environment'
 
-export interface User extends mongoose.Document{
+export interface User extends mongoose.Document {
     name: string,
     email: string,
-    password: string
-    matches(password: string): boolean 
+    password: string,
+    cpf: string,
+    gender: string,
+    profiles: string[],
+    matches(password: string): boolean,
+    hasAny(...profiles: string[]): boolean
 }
 
-export interface UserModel extends mongoose.Model<User>{
+export interface UserModel extends mongoose.Model<User> {
     findByEmail(email: string, projection?: string): Promise<User>
 }
 
@@ -44,44 +48,52 @@ const userSchema = new mongoose.Schema({
             validator: validateCPF,
             message: '{PATH}:Invalid CPF ({VALUE})'
         }
+    },
+    profiles: {
+        type: [String],
+        required: false
     }
 })
 
-userSchema.statics.findByEmail = function(email: string, projection: string) {
-    return this.findOne({email}, projection) //{email: email}
+userSchema.statics.findByEmail = function (email: string, projection: string) {
+    return this.findOne({ email }, projection) //{email: email}
 }
 
-userSchema.methods.matches = function(password: string): boolean{
+userSchema.methods.matches = function (password: string): boolean {
     /*console.log(bcrypt.compareSync(password, this.password))
     return bcrypt.compareSync(password, this.password)*/
-    if(password === this.password){
+    if (password === this.password) {
         return true
-    }else{
+    } else {
         return false
     }
 }
 
-const hashPassword = (obj, next)=>{
+userSchema.methods.hasAny = function(...profiles: string []): boolean{
+    return profiles.some(profile => this.profiles.indexOf(profiles)!== -1)
+}
+
+const hashPassword = (obj, next) => {
     bcrypt.hash(obj.password, environment.security.saltRounds)
-        .then(hash=>{
+        .then(hash => {
             obj.password = hash
             next()
         }).catch(next)
 }
 
-const saveMiddleware = function(next){
+const saveMiddleware = function (next) {
     const user: User = this
-    if(!user.isModified('password')){
+    if (!user.isModified('password')) {
         next()
-    }else{
+    } else {
         hashPassword(user, next())
     }
 }
 
-const updateMiddleware = function(next){
-    if(!this.getUpdate().password){
+const updateMiddleware = function (next) {
+    if (!this.getUpdate().password) {
         next()
-    }else{
+    } else {
         hashPassword(this.update(), next())
     }
 }
