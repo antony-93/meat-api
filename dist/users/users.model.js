@@ -29,15 +29,25 @@ const userSchema = new mongoose.Schema({
     },
     cpf: {
         type: String,
-        required: false,
+        required: true,
         validate: {
             validator: validators_1.validateCPF,
             message: '{PATH}:Invalid CPF ({VALUE})'
         }
     }
 });
-userSchema.statics.findByEmail = function (email) {
-    return this.findOne({ email }); //{email: email}
+userSchema.statics.findByEmail = function (email, projection) {
+    return this.findOne({ email }, projection); //{email: email}
+};
+userSchema.methods.matches = function (password) {
+    /*console.log(bcrypt.compareSync(password, this.password))
+    return bcrypt.compareSync(password, this.password)*/
+    if (password === this.password) {
+        return true;
+    }
+    else {
+        return false;
+    }
 };
 const hashPassword = (obj, next) => {
     bcrypt.hash(obj.password, environment_1.environment.security.saltRounds)
@@ -56,11 +66,11 @@ const saveMiddleware = function (next) {
     }
 };
 const updateMiddleware = function (next) {
-    if (!this.getUpdate().isModified('password')) {
+    if (!this.getUpdate().password) {
         next();
     }
     else {
-        hashPassword(this.getUpdate(), next());
+        hashPassword(this.update(), next());
     }
 };
 userSchema.pre('save', saveMiddleware);

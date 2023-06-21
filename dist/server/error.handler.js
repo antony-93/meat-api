@@ -19,7 +19,8 @@ exports.handleError = (req, resp, err, done) => {
                 messages.push({ message: err.erros[name].message });
             }
             err.toJSON = () => ({
-                errros: messages
+                message: 'Validation error while processing your request',
+                errors: messages
             });
             break;
     }

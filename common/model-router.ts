@@ -94,7 +94,7 @@ export abstract class ModelRouter<D extends mongoose.Document> extends Router {
 
     update = (req, resp, next) => {
         const options = { new: true }
-        this.model.findByIdAndUpdate(req.params.id, req.body)
+        this.model.findByIdAndUpdate(req.params.id, req.body, options)
             .then((this.render(resp, next)))
             .catch(next)
     }
