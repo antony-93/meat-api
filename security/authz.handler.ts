@@ -6,6 +6,7 @@ export const authorize: (...profiles: string[])=> restify.RequestHandler = (...p
         if(req.authenticated !== undefined && req.authenticated.hasAny(...profiles)){
             next()
         } else {
+            console.log(req.authenticated)
             next(new ForbiddenError('Permission denied'))
         }
     }

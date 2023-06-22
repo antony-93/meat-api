@@ -7,6 +7,7 @@ exports.authorize = (...profiles) => {
             next();
         }
         else {
+            console.log(req.authenticated);
             next(new restify_errors_1.ForbiddenError('Permission denied'));
         }
     };

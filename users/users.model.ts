@@ -43,7 +43,7 @@ const userSchema = new mongoose.Schema({
     },
     cpf: {
         type: String,
-        required: true,
+        required: false,
         validate: {
             validator: validateCPF,
             message: '{PATH}:Invalid CPF ({VALUE})'
