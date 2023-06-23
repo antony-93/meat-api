@@ -23,7 +23,7 @@ class Server {
                 };
                 if (environment_1.environment.security.enableHTTPS) {
                     options.certificate = fs.readFileSync(environment_1.environment.security.certificate),
-                        options.key = fs.readFileSync(environment_1.environment.security.key);
+                        options.key = fs.readFileSync(environment_1.environment.security.certificate);
                 }
                 this.application = restify.createServer(options);
                 this.application.use(restify.plugins.queryParser());

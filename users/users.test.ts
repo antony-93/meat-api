@@ -55,6 +55,7 @@ test('patch /users/:id', () => {
         })
         .then(response => request(address)
             .patch(`/users/${response.body._id}`)
+            .set('Authorization', auth)
             .send({
                 name: 'usuario2 - patch'
             }))

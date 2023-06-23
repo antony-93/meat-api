@@ -44,14 +44,7 @@ userSchema.statics.findByEmail = function (email, projection) {
     return this.findOne({ email }, projection); //{email: email}
 };
 userSchema.methods.matches = function (password) {
-    /*console.log(bcrypt.compareSync(password, this.password))
-    return bcrypt.compareSync(password, this.password)*/
-    if (password === this.password) {
-        return true;
-    }
-    else {
-        return false;
-    }
+    return bcrypt.compareSync(password, this.password);
 };
 userSchema.methods.hasAny = function (...profiles) {
     return profiles.some(profile => this.profiles.indexOf(profiles) !== -1);
@@ -69,7 +62,7 @@ const saveMiddleware = function (next) {
         next();
     }
     else {
-        hashPassword(user, next());
+        hashPassword(user, next);
     }
 };
 const updateMiddleware = function (next) {

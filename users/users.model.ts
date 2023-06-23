@@ -60,13 +60,7 @@ userSchema.statics.findByEmail = function (email: string, projection: string) {
 }
 
 userSchema.methods.matches = function (password: string): boolean {
-    /*console.log(bcrypt.compareSync(password, this.password))
-    return bcrypt.compareSync(password, this.password)*/
-    if (password === this.password) {
-        return true
-    } else {
-        return false
-    }
+    return bcrypt.compareSync(password, this.password)
 }
 
 userSchema.methods.hasAny = function(...profiles: string []): boolean{
@@ -86,7 +80,7 @@ const saveMiddleware = function (next) {
     if (!user.isModified('password')) {
         next()
     } else {
-        hashPassword(user, next())
+        hashPassword(user, next)
     }
 }
 

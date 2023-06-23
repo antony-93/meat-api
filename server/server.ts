@@ -30,7 +30,7 @@ export class Server {
 
                 if(environment.security.enableHTTPS){
                     options.certificate = fs.readFileSync(environment.security.certificate),
-                    options.key = fs.readFileSync(environment.security.key)
+                    options.key = fs.readFileSync(environment.security.certificate)
                 }
 
                 this.application = restify.createServer(options)

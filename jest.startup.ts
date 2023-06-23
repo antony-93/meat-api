@@ -16,7 +16,7 @@ const beforeAllTests = () => {
         usersRouter,
         reviewsRouter])
         .then(() => User.remove({}).exec())
-        .then(() =>{
+        .then(() => {
             let admin = new User()
             admin.name = 'admin'
             admin.email = 'admin@email.com'
@@ -34,4 +34,7 @@ const afterAllTests = () => {
 beforeAllTests()
     .then(() => jestCli.run())
     .then(() => afterAllTests())
-    .catch(console.error)
+    .catch(error => {
+        console.error(error)
+        process.exit(1)
+    })

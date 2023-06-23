@@ -16,7 +16,7 @@ function extractToken(req: restify.Request){
     let token = undefined
     const authorization = req.header('authorization')
     if(authorization){
-        const parts: string[] = authorization.split('')
+        const parts: string[] = authorization.split(' ')
         if(parts.length === 2 && parts[0] === 'Bearer'){
             token = parts[1]
         }
@@ -31,6 +31,7 @@ function applyBearer(req: restify.Request, next): (error, decoded) => void {
             if(user){
                 req.authenticated = user
             }
+            next()
         }).catch(next)
     }else{
         next()
