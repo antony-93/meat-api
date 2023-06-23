@@ -1,5 +1,4 @@
 import * as mongoose from 'mongoose'
-import { validateCPF } from '../common/validators'
 import * as bcrypt from 'bcrypt'
 import { environment } from '../common/environment'
 
@@ -7,8 +6,6 @@ export interface User extends mongoose.Document {
     name: string,
     email: string,
     password: string,
-    cpf: string,
-    gender: string,
     profiles: string[],
     matches(password: string): boolean,
     hasAny(...profiles: string[]): boolean
@@ -35,19 +32,6 @@ const userSchema = new mongoose.Schema({
         type: String,
         select: false,
         required: true
-    },
-    gender: {
-        type: String,
-        required: false,
-        enum: ['Male', 'Female']
-    },
-    cpf: {
-        type: String,
-        required: false,
-        validate: {
-            validator: validateCPF,
-            message: '{PATH}:Invalid CPF ({VALUE})'
-        }
     },
     profiles: {
         type: [String],

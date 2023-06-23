@@ -21,8 +21,7 @@ test('post /users', () => {
         .send({
             name: 'usuario1',
             email: 'usuario1@gmail.com',
-            password: '123456',
-            cpf: '119.943.619-48'
+            password: '123456'
         })
         .then(response => {
             expect(response.status).toBe(200)
@@ -30,7 +29,6 @@ test('post /users', () => {
             expect(response.body.name).toBe('usuario1')
             expect(response.body.email).toBe('usuario1@gmail.com')
             expect(response.body.password).toBeUndefined()
-            expect(response.body.cpf).toBe('119.943.619-48')
         }).catch(fail)
 })
 
