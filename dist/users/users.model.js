@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const environment_1 = require("../common/environment");
+const orders_model_1 = require("./orders/orders.model");
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -23,6 +24,10 @@ const userSchema = new mongoose.Schema({
     },
     profiles: {
         type: [String],
+        required: false
+    },
+    orders: {
+        type: [orders_model_1.orderSchema],
         required: false
     }
 });
