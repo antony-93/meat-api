@@ -1,5 +1,5 @@
 import { restaurantsRouter } from "./restaurants/restaurants.router";
-import { reviewsRouter } from "./reviews/reviews.router";
+import { reviewsRouter } from "./restaurants/reviews/reviews.router";
 import { Server } from "./server/server";
 import { usersRouter } from "./users/users.router";
 

@@ -1,8 +1,8 @@
 import * as restify from 'restify'
-import { ModelRouter } from "../common/model-router";
+import { ModelRouter } from "../../common/model-router";
 import { Review } from "./reviews.model";
 import * as mongoose from 'mongoose'
-import { authorize } from '../security/authz.handler';
+import { authorize } from '../../security/authz.handler';
 
 class ReviewsRouter extends ModelRouter<Review>{
     constructor(){

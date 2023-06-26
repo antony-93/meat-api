@@ -3,8 +3,8 @@ import { environment } from "./common/environment"
 import { Server } from "./server/server"
 import { User } from "./users/users.model"
 import { usersRouter } from "./users/users.router"
-import { reviewsRouter } from './reviews/reviews.router'
-import { Review } from './reviews/reviews.model'
+import { reviewsRouter } from './restaurants/reviews/reviews.router'
+import { Review } from './restaurants/reviews/reviews.model'
 
 let server: Server
 

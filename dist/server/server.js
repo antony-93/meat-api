@@ -29,8 +29,8 @@ class Server {
                 this.application = restify.createServer(options);
                 const corsOptions = {
                     preflightMaxAge: 10,
-                    origins: ['http://localhost:4200', 'https://localhost:4200'],
-                    allowHeaders: ['authorization'],
+                    origins: ['http://localhost:4200'],
+                    allowHeaders: ['*'],
                     exposeHeaders: ['x-custom-header']
                 };
                 const cors = corsMiddleware(corsOptions);

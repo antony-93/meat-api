@@ -7,6 +7,12 @@ export interface MenuItem extends mongoose.Document{
 
 export interface Restaurant extends mongoose.Document{
     name: String,
+    category: String,
+    deliveryEstimate: String,
+    rating: Number,
+    imagePath: String,
+    about: String,
+    hours: String,
     menu: MenuItem[]
 } 
 
@@ -36,8 +42,8 @@ const menuSchema = new mongoose.Schema({
 const restSchema = new mongoose.Schema({
     name:{
         type: String,
-        unique: true,
-        required: true
+        required: true,
+        unique: true
     },
     category:{
         type: String,
@@ -48,7 +54,7 @@ const restSchema = new mongoose.Schema({
         required: true
     },
     rating:{
-        type: String,
+        type: Number,
         required: false
     },
     imagePath:{
