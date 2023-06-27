@@ -7,7 +7,7 @@ class ModelRouter extends router_1.Router {
     constructor(model) {
         super();
         this.model = model;
-        this.pageSize = 4;
+        this.pageSize = 6;
         this.validateId = (req, resp, next) => {
             if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
                 next(new restify_errors_1.NotFoundError('Document Not Found'));
@@ -27,12 +27,6 @@ class ModelRouter extends router_1.Router {
                 .then(this.renderAll(resp, next, {
                 page, count, pageSize: this.pageSize, url: req.url
             })))
-                .catch(next);
-        };
-        this.save = (req, resp, next) => {
-            let document = new this.model(req.body);
-            document.save()
-                .then(this.render(resp, next))
                 .catch(next);
         };
         this.findById = (req, resp, next) => {
@@ -56,7 +50,13 @@ class ModelRouter extends router_1.Router {
         this.update = (req, resp, next) => {
             const options = { new: true };
             this.model.findByIdAndUpdate(req.params.id, req.body, options)
-                .then((this.render(resp, next)))
+                .then(this.render(resp, next))
+                .catch(next);
+        };
+        this.save = (req, resp, next) => {
+            let document = new this.model(req.body);
+            document.save()
+                .then(this.render(resp, next))
                 .catch(next);
         };
         this.delete = (req, resp, next) => {

@@ -1,14 +1,12 @@
 import * as mongoose from 'mongoose'
 import * as bcrypt from 'bcrypt'
 import { environment } from '../common/environment'
-import { Orders, orderSchema } from './orders/orders.model'
 
 export interface User extends mongoose.Document {
     name: string,
     email: string,
     password: string,
     profiles: string[],
-    orders: Orders[],
     matches(password: string): boolean,
     hasAny(...profiles: string[]): boolean
 }
@@ -37,10 +35,6 @@ const userSchema = new mongoose.Schema({
     },
     profiles: {
         type: [String],
-        required: false
-    },
-    orders:{
-        type: [orderSchema],
         required: false
     }
 })

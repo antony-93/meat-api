@@ -6,6 +6,7 @@ export interface Item extends mongoose.Document {
 }
 
 export interface Orders extends mongoose.Document {
+    name: string
     address: string,
     number: string,
     optionalAddress: string,
@@ -25,6 +26,10 @@ const ItemSchema = new mongoose.Schema({
 })
 
 export const orderSchema = new mongoose.Schema({
+    name:{
+        type: String,
+        required: true
+    },
     address:{
         type: String,
         required: true
@@ -47,4 +52,4 @@ export const orderSchema = new mongoose.Schema({
     }
 })
 
-export const User = mongoose.model<Orders>('Orders', orderSchema)
+export const Orders = mongoose.model<Orders>('Orders', orderSchema)

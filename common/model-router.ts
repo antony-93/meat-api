@@ -6,7 +6,7 @@ export abstract class ModelRouter<D extends mongoose.Document> extends Router {
 
     basePath: string
 
-    pageSize = 4
+    pageSize = 6
 
     constructor(protected model: mongoose.Model<D>) {
         super()
@@ -66,13 +66,6 @@ export abstract class ModelRouter<D extends mongoose.Document> extends Router {
             .catch(next)
     }
 
-    save = (req, resp, next) => {
-        let document = new this.model(req.body)
-        document.save()
-            .then(this.render(resp, next))
-            .catch(next)
-    }
-
     findById = (req, resp, next) => {
         this.prepareOne(this.model.findById(req.params.id))
             .then(this.render(resp, next))
@@ -95,7 +88,14 @@ export abstract class ModelRouter<D extends mongoose.Document> extends Router {
     update = (req, resp, next) => {
         const options = { new: true }
         this.model.findByIdAndUpdate(req.params.id, req.body, options)
-            .then((this.render(resp, next)))
+            .then(this.render(resp, next))
+            .catch(next)
+    }
+
+    save = (req, resp, next) => {
+        let document = new this.model(req.body)
+        document.save()
+            .then(this.render(resp, next))
             .catch(next)
     }
 

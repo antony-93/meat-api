@@ -5,8 +5,8 @@ const environment_1 = require("./common/environment");
 const server_1 = require("./server/server");
 const users_model_1 = require("./users/users.model");
 const users_router_1 = require("./users/users.router");
-const reviews_router_1 = require("./restaurants/reviews/reviews.router");
-const reviews_model_1 = require("./restaurants/reviews/reviews.model");
+const reviews_router_1 = require("./reviews/reviews.router");
+const reviews_model_1 = require("./reviews/reviews.model");
 let server;
 const beforeAllTests = () => {
     environment_1.environment.db.url = process.env.DB_URL || 'mongodb://localhost/meat-api-test-db';

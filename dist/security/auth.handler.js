@@ -9,7 +9,6 @@ exports.authenticate = (req, resp, next) => {
     users_model_1.User.findByEmail(email, '+password') //
         .then(user => {
         if (user && user.matches(password)) {
-            console.log("entrou");
             const token = jwt.sign({ sub: user.email, iss: 'meat-api' }, environment_1.environment.security.apiSecret);
             resp.json({ name: user.name, email: user.email, accessToken: token });
             return next(false);

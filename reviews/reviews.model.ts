@@ -1,16 +1,21 @@
 import * as mongoose from 'mongoose'
-import { Restaurant } from '../restaurants.model'
-import { User } from '../../users/users.model'
+import { Restaurant } from '../restaurants/restaurants.model'
+import { User } from '../users/users.model'
 
 export interface Review extends mongoose.Document{
+    name: String,
     date: Date,
     rating: number,
     comments: true,
-    restaurant: mongoose.Types.ObjectId | Restaurant,
-    user: mongoose.Types.ObjectId | User
+    restaurantId: mongoose.Types.ObjectId | Restaurant,
+    userId: mongoose.Types.ObjectId | User
 }
 
 const reviewSchema = new mongoose.Schema({
+    name:{
+        type: String,
+        required: true
+    },
     date:{
         type: Date,
         required:true
@@ -24,12 +29,12 @@ const reviewSchema = new mongoose.Schema({
         required: true,
         maxlength: 500
     },
-    restaurant:{
+    restaurantId:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Restaurant',
         required: true
     },
-    user:{
+    userId:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true

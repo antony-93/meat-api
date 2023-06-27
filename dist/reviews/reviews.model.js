@@ -2,6 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose = require("mongoose");
 const reviewSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true
+    },
     date: {
         type: Date,
         required: true
@@ -15,12 +19,12 @@ const reviewSchema = new mongoose.Schema({
         required: true,
         maxlength: 500
     },
-    restaurant: {
+    restaurantId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Restaurant',
         required: true
     },
-    user: {
+    userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
