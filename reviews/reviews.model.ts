@@ -3,19 +3,19 @@ import { Restaurant } from '../restaurants/restaurants.model'
 import { User } from '../users/users.model'
 
 export interface Review extends mongoose.Document{
-    name: String,
     date: Date,
     rating: number,
     comments: true,
-    restaurantId: mongoose.Types.ObjectId | Restaurant,
-    userId: mongoose.Types.ObjectId | User
+    user: mongoose.Types.ObjectId | User
+    restaurant: mongoose.Types.ObjectId | Restaurant
+}
+
+export interface ReviewModel extends mongoose.Model<Review> {
+    findByIdUser(user: mongoose.Types.ObjectId): Promise<Review>
+    findByIdRestaurant(restaurant: mongoose.Types.ObjectId): Promise<Review>
 }
 
 const reviewSchema = new mongoose.Schema({
-    name:{
-        type: String,
-        required: true
-    },
     date:{
         type: Date,
         required:true
@@ -24,22 +24,29 @@ const reviewSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    coments:{
+    comments:{
         type: String,
         required: true,
         maxlength: 500
     },
-    restaurantId:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Restaurant',
-        required: true
-    },
-    userId:{
+    user:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
+        required: true
+    },
+    restaurant:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Restaurant',
         required: true
     }
 })
 
+reviewSchema.statics.findByIdRestaurant = function (restaurant: mongoose.Types.ObjectId) {
+    return this.findOne({ restaurant })
+}
 
-export const Review = mongoose.model<Review>('Review', reviewSchema)
+reviewSchema.statics.findByIdUser = function (user: mongoose.Types.ObjectId) {
+    return this.findOne({ user })
+}
+
+export const Review = mongoose.model<Review, ReviewModel>('Review', reviewSchema)

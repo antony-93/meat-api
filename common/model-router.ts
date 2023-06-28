@@ -13,13 +13,13 @@ export abstract class ModelRouter<D extends mongoose.Document> extends Router {
         this.basePath = `${model.collection.name}`
     }
 
-    protected prepareOne(query: mongoose.DocumentQuery<D, D>) {
+    protected prepareOne(query: mongoose.DocumentQuery<D,D>): mongoose.DocumentQuery<D,D>{
         return query
     }
 
     envelope(document: any): any {
         let resource = Object.assign({ _links: {} }, document.toJSON())
-        resource._links.self = `/${this.basePath}/${resource.id}`
+        resource._links.self = `/${this.basePath}/${resource._id}`
         return resource
     }
 

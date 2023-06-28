@@ -12,7 +12,7 @@ class RestaurantsRouter extends ModelRouter<Restaurant>{
 
     envelope(document) {
         let resource = super.envelope(document) 
-        resource._links.restaurant = `${this.basePath}/${resource._id}/menu`
+        resource._links.menu = `${this.basePath}/${resource._id}/menu`
         return resource 
     }
 
@@ -44,15 +44,15 @@ class RestaurantsRouter extends ModelRouter<Restaurant>{
 
     applyRoutes(application: restify.Server) {
 
-        application.get('/restaurants', this.findAll)
-        application.get('/restaurants/:id', [this.validateId,this.findById])
-        application.post('/restaurants', [authorize('admin'),this.save])
-        application.put('/restaurants/:id', [authorize('admin'),this.validateId,this.replace])
-        application.patch('restaurants/:id', [authorize('admin'),this.validateId,this.update])
-        application.del('/restaurants/:id', [authorize('admin'),this.validateId, this.delete])
+        application.get(`${this.basePath}`, this.findAll)
+        application.get(`${this.basePath}/:id`, [this.validateId,this.findById])
+        application.post(`${this.basePath}`, [authorize('admin'),this.save])
+        application.put(`${this.basePath}/:id`, [authorize('admin'),this.validateId,this.replace])
+        application.patch(`${this.basePath}/:id`, [authorize('admin'),this.validateId,this.update])
+        application.del(`${this.basePath}/:id`, [authorize('admin'),this.validateId, this.delete])
 
-        application.get('/restaurants/:id/menu', [this.validateId, this.findMenu])
-        application.put('/restaurants/:id/menu', [authorize('admin'),this.validateId, this.replaceMenu])
+        application.get(`${this.basePath}/:id/menu`, [this.validateId, this.findMenu])
+        application.put(`${this.basePath}/:id/menu`, [authorize('admin'),this.validateId, this.replaceMenu])
     }
 }
 

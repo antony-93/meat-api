@@ -1,12 +1,15 @@
 import * as mongoose from 'mongoose'
+import { Restaurant } from '../restaurants/restaurants.model'
 
 export interface Item extends mongoose.Document {
-    quantity: String,
-    menuId: String
+    quantity: String
+    menuId:  mongoose.Types.ObjectId | Restaurant
 }
 
 export interface Orders extends mongoose.Document {
-    name: string
+    name: string,
+    email: string,
+    emailConfirmation: string,
     address: string,
     number: string,
     optionalAddress: string,
@@ -19,8 +22,9 @@ const ItemSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    menuId: {
-        type: String,
+    menuId:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Restaurant',
         required: true
     }
 })
@@ -43,6 +47,14 @@ export const orderSchema = new mongoose.Schema({
         required: false
     },
     paymentOptions: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true
+    },
+    emailConfirmation: {
         type: String,
         required: true
     },

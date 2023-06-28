@@ -2,10 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose = require("mongoose");
 const reviewSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true
-    },
     date: {
         type: Date,
         required: true
@@ -14,20 +10,26 @@ const reviewSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    coments: {
+    comments: {
         type: String,
         required: true,
         maxlength: 500
     },
-    restaurantId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Restaurant',
-        required: true
-    },
-    userId: {
+    user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
+    },
+    restaurant: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Restaurant',
+        required: true
     }
 });
+reviewSchema.statics.findByIdRestaurant = function (restaurant) {
+    return this.findOne({ restaurant });
+};
+reviewSchema.statics.findByIdUser = function (user) {
+    return this.findOne({ user });
+};
 exports.Review = mongoose.model('Review', reviewSchema);
