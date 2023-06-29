@@ -42,11 +42,11 @@ const reviewSchema = new mongoose.Schema({
 })
 
 reviewSchema.statics.findByIdRestaurant = function (restaurant: mongoose.Types.ObjectId) {
-    return this.findOne({ restaurant })
+    return this.findOne({ restaurant }).populate('restaurant', 'name').populate('user', 'name')
 }
 
 reviewSchema.statics.findByIdUser = function (user: mongoose.Types.ObjectId) {
-    return this.findOne({ user })
+    return this.findOne({ user }).populate('restaurant', 'name').populate('user', 'name')
 }
 
 export const Review = mongoose.model<Review, ReviewModel>('Review', reviewSchema)

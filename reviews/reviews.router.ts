@@ -53,7 +53,6 @@ class ReviewsRouter extends ModelRouter<Review>{
 
     applyRoutes(application: restify.Server) {
         application.get(`${this.basePath}`, [this.findByIdRestaurant, this.findByIdUser, this.findAll])
-        application.get(`${this.basePath}`, this.findAll)
         application.get(`${this.basePath}/:id`, [this.validateId, this.findById])
         application.post(`${this.basePath}`, [authorize('admin' || 'user'),this.save])
     }

@@ -27,9 +27,9 @@ const reviewSchema = new mongoose.Schema({
     }
 });
 reviewSchema.statics.findByIdRestaurant = function (restaurant) {
-    return this.findOne({ restaurant });
+    return this.findOne({ restaurant }).populate('restaurant', 'name').populate('user', 'name');
 };
 reviewSchema.statics.findByIdUser = function (user) {
-    return this.findOne({ user });
+    return this.findOne({ user }).populate('restaurant', 'name').populate('user', 'name');
 };
 exports.Review = mongoose.model('Review', reviewSchema);

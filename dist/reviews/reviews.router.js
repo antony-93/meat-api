@@ -49,7 +49,6 @@ class ReviewsRouter extends model_router_1.ModelRouter {
     }*/
     applyRoutes(application) {
         application.get(`${this.basePath}`, [this.findByIdRestaurant, this.findByIdUser, this.findAll]);
-        application.get(`${this.basePath}`, this.findAll);
         application.get(`${this.basePath}/:id`, [this.validateId, this.findById]);
         application.post(`${this.basePath}`, [authz_handler_1.authorize('admin' || 'user'), this.save]);
     }
