@@ -1,20 +1,22 @@
 import * as mongoose from 'mongoose'
-import { Restaurant } from '../restaurants/restaurants.model'
+import { MenuItem } from '../menu/menu.model'
 
 export interface Item extends mongoose.Document {
     quantity: String
-    menuId:  mongoose.Types.ObjectId | Restaurant
+    menu:  mongoose.Types.ObjectId | MenuItem
 }
 
 export interface Orders extends mongoose.Document {
-    name: string,
-    email: string,
-    emailConfirmation: string,
     address: string,
+    user: string,
     number: string,
     optionalAddress: string,
     paymentOptions: string,
     orderItems: Item
+}
+
+export interface Order extends mongoose.Model<Orders> {
+    findByEmailUser(id: string): Promise<Orders>
 }
 
 const ItemSchema = new mongoose.Schema({
@@ -22,19 +24,19 @@ const ItemSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    menuId:{
+    menu:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Restaurant',
+        ref: 'Menu',
         required: true
     }
 })
 
 export const orderSchema = new mongoose.Schema({
-    name:{
+    address:{
         type: String,
         required: true
     },
-    address:{
+    user:{
         type: String,
         required: true
     },
@@ -50,18 +52,16 @@ export const orderSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    email: {
-        type: String,
-        required: true
-    },
-    emailConfirmation: {
-        type: String,
-        required: true
-    },
     orderItems: {
         type: [ItemSchema],
         required: true
     }
 })
 
-export const Orders = mongoose.model<Orders>('Orders', orderSchema)
+orderSchema.statics.findByEmailUser = function (user: string) {
+    return this.find({ user: user })
+    .populate('orderItems.menu', ['price', 'name'])
+}
+
+
+export const Orders = mongoose.model<Orders, Order>('Orders', orderSchema)

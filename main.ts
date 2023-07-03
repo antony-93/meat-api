@@ -1,3 +1,4 @@
+import { menuRouter } from "./menu/menu.router";
 import { orderRouter } from "./orders/orders.router";
 import { restaurantsRouter } from "./restaurants/restaurants.router";
 import { reviewsRouter } from "./reviews/reviews.router";
@@ -10,7 +11,8 @@ server.bootstrap([
     usersRouter,
     restaurantsRouter,
     reviewsRouter,
-    orderRouter
+    orderRouter,
+    menuRouter
 ]).then(server => {
     console.log('Server is listening on:', server.application.address())
 }).catch(error => {

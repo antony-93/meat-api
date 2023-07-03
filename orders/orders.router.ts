@@ -9,8 +9,22 @@ class OrdersRouter extends ModelRouter<Orders>{
         super(Orders)
     }
 
+    findByIdUser = (req,resp,next) =>{
+        if (req.query.user) {
+            Orders.findByEmailUser(req.query.user)
+                .then(orders => orders ? [orders] : [])
+                .then(this.renderAll(resp, next, {
+                    pageSize: this.pageSize,
+                    url: req.url
+                }))
+                .catch(next)
+        } else {
+            next()
+        }
+    }
+
     applyRoutes(application: restify.Server) {
-        application.get(`${this.basePath}`, [authorize('admin'),this.findAll])
+        application.get(`${this.basePath}`, [authorize('admin' || 'user'), this.findByIdUser, this.findAll])
         application.get(`${this.basePath}/:id`, [authorize('admin'),this.validateId, this.findById])
         application.post(`${this.basePath}`, [authorize('admin' || 'user'),this.save])
     }

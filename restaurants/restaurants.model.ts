@@ -1,10 +1,5 @@
 import * as mongoose from 'mongoose'
 
-export interface MenuItem extends mongoose.Document{
-    name: string,
-    price: number
-}
-
 export interface Restaurant extends mongoose.Document{
     name: String,
     category: String,
@@ -12,32 +7,8 @@ export interface Restaurant extends mongoose.Document{
     rating: Number,
     imagePath: String,
     about: String,
-    hours: String,
-    menu: MenuItem[]
+    hours: String
 } 
-
-const menuSchema = new mongoose.Schema({
-    name:{
-        type: String,
-        required: true
-    },
-    price:{
-        type: Number,
-        required: true
-    },
-    imagePath:{
-        type: String,
-        required: true
-    },
-    description: {
-        type: String,
-        required: true
-    },
-    restaurantId:{
-        type: String,
-        required: false
-    }
-})
 
 const restSchema = new mongoose.Schema({
     name:{
@@ -60,12 +31,6 @@ const restSchema = new mongoose.Schema({
     imagePath:{
         type: String,
         required: true
-    },
-    menu:{
-        type: [menuSchema],
-        required: true,
-        select: false,
-        default: []
     },
     about:{
         type: String,
