@@ -1,4 +1,5 @@
 import { NotFoundError } from "restify-errors";
+import * as restify from 'restify'
 import { Router } from "./router";
 import * as mongoose from 'mongoose'
 
@@ -13,7 +14,7 @@ export abstract class ModelRouter<D extends mongoose.Document> extends Router {
         this.basePath = `${model.collection.name}`
     }
 
-    protected prepareOne(query: mongoose.DocumentQuery<D,D>): mongoose.DocumentQuery<D,D>{
+    protected prepareOne(query: mongoose.DocumentQuery<D, D>): mongoose.DocumentQuery<D, D> {
         return query
     }
 
@@ -70,6 +71,51 @@ export abstract class ModelRouter<D extends mongoose.Document> extends Router {
         this.prepareOne(this.model.findById(req.params.id))
             .then(this.render(resp, next))
             .catch(next)
+    }
+
+
+    findByUser = (param1: string, param2: string[]) => (req,resp,next) => {
+        if (req.query.user) {
+            let user = req.query.user
+            let page = parseInt(req.query._page || 1)
+            page = page > 0 ? page : 1
+
+            const skip = (page - 1) * this.pageSize
+
+            this.model.count({}).exec()
+                .then(count => this.model.find({ user })
+                    .populate(param1, param2)
+                    .skip(skip)
+                    .limit(this.pageSize)
+                    .then(this.renderAll(resp, next, {
+                        page, count, pageSize: this.pageSize, url: req.url
+                    })))
+                .catch(next)
+        } else {
+            next()
+        }
+    }
+
+    findByRestaurant = (param1: string, param2: string[]) => (req,resp,next) => {
+        if (req.query.restaurant) {
+            let restaurant = req.query.restaurant
+            let page = parseInt(req.query._page || 1)
+            page = page > 0 ? page : 1
+
+            const skip = (page - 1) * this.pageSize
+
+            this.model.count({}).exec()
+                .then(count => this.model.find({ restaurant })
+                    .populate(param1, param2)
+                    .skip(skip)
+                    .limit(this.pageSize)
+                    .then(this.renderAll(resp, next, {
+                        page, count, pageSize: this.pageSize, url: req.url
+                    })))
+                .catch(next)
+        } else {
+            next()
+        }
     }
 
     replace = (req, resp, next) => {

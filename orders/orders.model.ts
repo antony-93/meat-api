@@ -15,10 +15,6 @@ export interface Orders extends mongoose.Document {
     orderItems: Item
 }
 
-export interface Order extends mongoose.Model<Orders> {
-    findByEmailUser(id: string): Promise<Orders>
-}
-
 const ItemSchema = new mongoose.Schema({
     quantity:{
         type: String,
@@ -58,10 +54,4 @@ export const orderSchema = new mongoose.Schema({
     }
 })
 
-orderSchema.statics.findByEmailUser = function (user: string) {
-    return this.find({ user: user })
-    .populate('orderItems.menu', ['price', 'name'])
-}
-
-
-export const Orders = mongoose.model<Orders, Order>('Orders', orderSchema)
+export const Orders = mongoose.model<Orders>('Orders', orderSchema)

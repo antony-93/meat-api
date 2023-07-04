@@ -34,6 +34,46 @@ class ModelRouter extends router_1.Router {
                 .then(this.render(resp, next))
                 .catch(next);
         };
+        this.findByUser = (param1, param2) => (req, resp, next) => {
+            if (req.query.user) {
+                let user = req.query.user;
+                let page = parseInt(req.query._page || 1);
+                page = page > 0 ? page : 1;
+                const skip = (page - 1) * this.pageSize;
+                this.model.count({}).exec()
+                    .then(count => this.model.find({ user })
+                    .populate(param1, param2)
+                    .skip(skip)
+                    .limit(this.pageSize)
+                    .then(this.renderAll(resp, next, {
+                    page, count, pageSize: this.pageSize, url: req.url
+                })))
+                    .catch(next);
+            }
+            else {
+                next();
+            }
+        };
+        this.findByRestaurant = (param1, param2) => (req, resp, next) => {
+            if (req.query.restaurant) {
+                let restaurant = req.query.restaurant;
+                let page = parseInt(req.query._page || 1);
+                page = page > 0 ? page : 1;
+                const skip = (page - 1) * this.pageSize;
+                this.model.count({}).exec()
+                    .then(count => this.model.find({ restaurant })
+                    .populate(param1, param2)
+                    .skip(skip)
+                    .limit(this.pageSize)
+                    .then(this.renderAll(resp, next, {
+                    page, count, pageSize: this.pageSize, url: req.url
+                })))
+                    .catch(next);
+            }
+            else {
+                next();
+            }
+        };
         this.replace = (req, resp, next) => {
             const options = { runValidators: true, new: true };
             this.model.update({ _id: req.params.id }, req.body, options)

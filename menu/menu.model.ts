@@ -9,10 +9,6 @@ export interface MenuItem extends mongoose.Document{
     restaurant: mongoose.Types.ObjectId | Restaurant
 }
 
-export interface MenuModel extends mongoose.Model<MenuItem> {
-    findByIdRestaurant(restaurant: mongoose.Types.ObjectId): Promise<MenuItem>
-}
-
 export const menuItemSchema = new mongoose.Schema({
     name:{
         type: String,
@@ -36,8 +32,5 @@ export const menuItemSchema = new mongoose.Schema({
     }
 })
 
-menuItemSchema.statics.findByIdRestaurant = function (restaurant: mongoose.Types.ObjectId) {
-    return this.findOne({ restaurant })
-}
 
-export const Menu = mongoose.model<MenuItem, MenuModel>('Menu', menuItemSchema)
+export const Menu = mongoose.model<MenuItem>('Menu', menuItemSchema)

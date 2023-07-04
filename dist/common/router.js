@@ -24,11 +24,18 @@ class Router extends events_1.EventEmitter {
     renderAll(response, next, options = {}) {
         return (documents) => {
             if (documents) {
+                console.log('aqui');
+                console.log(documents);
                 documents.forEach((document, index, array) => {
+                    console.log(document);
                     this.emit('beforeRender', document);
+                    console.log('aqui');
+                    console.log(document);
                     array[index] = this.envelope(document);
+                    console.log('asda');
                 });
                 response.json(this.envelopeAll(documents, options));
+                console.log('adasdasa');
             }
             else {
                 response.json(this.envelopeAll([]));
