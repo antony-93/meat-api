@@ -13,7 +13,7 @@ class RestaurantsRouter extends model_router_1.ModelRouter {
         return resource;
     }
     applyRoutes(application) {
-        application.get(`${this.basePath}`, this.findAll);
+        application.get(`${this.basePath}`, this.findWithSearchTerm, this.findAll);
         application.get(`${this.basePath}/:id`, [this.validateId, this.findById]);
         application.post(`${this.basePath}`, [authz_handler_1.authorize('admin'), this.save]);
         application.put(`${this.basePath}/:id`, [authz_handler_1.authorize('admin'), this.validateId, this.replace]);

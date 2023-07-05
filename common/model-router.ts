@@ -67,6 +67,35 @@ export abstract class ModelRouter<D extends mongoose.Document> extends Router {
             .catch(next)
     }
 
+    findWithSearchTerm = (req, resp, next) => {
+        const searchTerm = req.query.q; // Obtém o termo de pesquisa da query string
+        let query = {};
+        let page = parseInt(req.query._page || 1);
+
+        page = page > 0 ? page : 1;
+        const skip = (page - 1) * this.pageSize;
+
+        if (searchTerm) {
+            const searchRegex = new RegExp(searchTerm, 'i');
+            query = {
+                $or: [
+                    { name: searchRegex },
+                    { category: searchRegex },
+                    // Adicione outros campos que você deseja pesquisar aqui
+                ],
+            };
+        }
+
+        this.model.count(query).exec()
+            .then(count => this.model.find(query)
+                .skip(skip)
+                .limit(this.pageSize)
+                .then(this.renderAll(resp, next, {
+                    page, count, pageSize: this.pageSize, url: req.url
+                })))
+            .catch(next);
+    };
+
     findById = (req, resp, next) => {
         this.prepareOne(this.model.findById(req.params.id))
             .then(this.render(resp, next))
@@ -74,16 +103,16 @@ export abstract class ModelRouter<D extends mongoose.Document> extends Router {
     }
 
 
-    findByUser = (param1: string, param2: string[]) => (req,resp,next) => {
-        if (req.query.user) {
-            let user = req.query.user
+    findByEmailAll = (param1?: string, param2?: string[]) => (req, resp, next) => {
+        if (req.query.email) {
+            let email = req.query.email
             let page = parseInt(req.query._page || 1)
             page = page > 0 ? page : 1
 
             const skip = (page - 1) * this.pageSize
 
             this.model.count({}).exec()
-                .then(count => this.model.find({ user })
+                .then(count => this.model.find({ email })
                     .populate(param1, param2)
                     .skip(skip)
                     .limit(this.pageSize)
@@ -96,7 +125,7 @@ export abstract class ModelRouter<D extends mongoose.Document> extends Router {
         }
     }
 
-    findByRestaurant = (param1: string, param2: string[]) => (req,resp,next) => {
+    findByRestaurant = (param1?: string, param2?: string[]) => (req, resp, next) => {
         if (req.query.restaurant) {
             let restaurant = req.query.restaurant
             let page = parseInt(req.query._page || 1)

@@ -8,7 +8,7 @@ export interface Item extends mongoose.Document {
 
 export interface Orders extends mongoose.Document {
     address: string,
-    user: string,
+    email: string,
     number: string,
     optionalAddress: string,
     paymentOptions: string,
@@ -32,7 +32,7 @@ export const orderSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    user:{
+    email:{
         type: String,
         required: true
     },

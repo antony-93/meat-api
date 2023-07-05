@@ -13,7 +13,7 @@ class OrdersRouter extends ModelRouter<Orders>{
     }
 
     applyRoutes(application: restify.Server) {
-        application.get(`${this.basePath}`, [authorize('admin' || 'user'), this.findByUser(this.param1, this.param2), this.findAll])
+        application.get(`${this.basePath}`, [authorize('admin' || 'user'), this.findByEmailAll(this.param1, this.param2), this.findAll])
         application.get(`${this.basePath}/:id`, [authorize('admin'),this.validateId, this.findById])
         application.post(`${this.basePath}`, [authorize('admin' || 'user'),this.save])
     }
