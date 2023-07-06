@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const restify = require("restify");
 const mongoose = require("mongoose");
-const fs = require("fs");
 const environment_1 = require("../common/environment");
 const merge_patch_parser_1 = require("./merge-patch.parser");
 const error_handler_1 = require("./error.handler");
@@ -22,10 +21,6 @@ class Server {
                     name: 'meat-api',
                     version: '1.0.0'
                 };
-                if (environment_1.environment.security.enableHTTPS) {
-                    options.certificate = fs.readFileSync(environment_1.environment.security.certificate),
-                        options.key = fs.readFileSync(environment_1.environment.security.certificate);
-                }
                 this.application = restify.createServer(options);
                 const corsOptions = {
                     preflightMaxAge: 10,
