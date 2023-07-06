@@ -58,7 +58,7 @@ class ModelRouter extends router_1.Router {
                 .then(this.render(resp, next))
                 .catch(next);
         };
-        this.findByEmailAll = (param1, param2) => (req, resp, next) => {
+        this.findByEmailAll = (params) => (req, resp, next) => {
             if (req.query.email) {
                 let email = req.query.email;
                 let page = parseInt(req.query._page || 1);
@@ -66,7 +66,7 @@ class ModelRouter extends router_1.Router {
                 const skip = (page - 1) * this.pageSize;
                 this.model.count({}).exec()
                     .then(count => this.model.find({ email })
-                    .populate(param1, param2)
+                    .populate(params)
                     .skip(skip)
                     .limit(this.pageSize)
                     .then(this.renderAll(resp, next, {

@@ -29,11 +29,6 @@ export class Server {
                     version: '1.0.0'
                 }
 
-                if(environment.security.enableHTTPS){
-                    options.certificate = fs.readFileSync(environment.security.certificate),
-                    options.key = fs.readFileSync(environment.security.certificate)
-                }
-
                 this.application = restify.createServer(options)
 
                 const corsOptions: corsMiddleware.Options = {

@@ -1,5 +1,4 @@
 import { NotFoundError } from "restify-errors";
-import * as restify from 'restify'
 import { Router } from "./router";
 import * as mongoose from 'mongoose'
 
@@ -103,7 +102,7 @@ export abstract class ModelRouter<D extends mongoose.Document> extends Router {
     }
 
 
-    findByEmailAll = (param1?: string, param2?: string[]) => (req, resp, next) => {
+    findByEmailAll = (params?) => (req, resp, next) => {
         if (req.query.email) {
             let email = req.query.email
             let page = parseInt(req.query._page || 1)
@@ -113,7 +112,7 @@ export abstract class ModelRouter<D extends mongoose.Document> extends Router {
 
             this.model.count({}).exec()
                 .then(count => this.model.find({ email })
-                    .populate(param1, param2)
+                .populate(params)
                     .skip(skip)
                     .limit(this.pageSize)
                     .then(this.renderAll(resp, next, {
